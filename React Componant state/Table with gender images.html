@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+        <title>Document</title>
+        <style>
+            th,table,tr,td{
+                margin: 2px;
+                border: 2px solid black;
+            }
+        </style>
+    </head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Abc(){
+            var [x,setx]=React.useState([{fn:'Murari',ln:'Tagore',age:22,gender:'male'},
+            {fn:'Bhargavi',ln:'vallipi',age:22,gender:'female'},
+            {fn:'Rahul',ln:'Potharlanka',age:23,gender:'male'},
+            {fn:'John',ln:'Dev',age:25,gender:'male'}])
+            return (<>
+                    {x.map((a)=>{return <tr class="text-center">
+                                        <td>{a.fn}</td>
+                                        <td>{a.ln}</td>
+                                        <td>{a.age}</td>
+                                        <td><img style={{width:"100px",height:"100px"}} src={a.gender==='male'?'https://png.pngtree.com/png-clipart/20190520/original/pngtree-business-male-icon-vector-png-image_4187852.jpg':
+                                                    'https://www.freeiconspng.com/thumbs/female-icon/female-icon-27.png'} /></td>
+                                    </tr>})}
+                </>)
+        }
+        var x=<table>
+                <thead>
+                    <tr class="text-center">
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Age</th>    
+                        <th>Gender</th>    
+                    </tr>    
+                </thead>
+                <tbody>
+                    <Abc></Abc>    
+                </tbody>
+            </table>
+        ReactDOM.render(x,document.getElementById("root"))
+    </script>
+</body>
+</html>

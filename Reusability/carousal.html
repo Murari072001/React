@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <title>Document</title>
+</head>
+<body class="bg-dark">
+    <div id="root"></div>
+    <script type="text/babel">
+        var ar=['https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/India-flag-a4.jpg/640px-India-flag-a4.jpg',
+        'https://media.istockphoto.com/id/806626836/vector/france-flag.jpg?s=612x612&w=0&k=20&c=_s4Qz35KMAuUHc7RVDtFrzboCk46dBoefbkPF2pkpVY=',
+        'data:image/jpeg;base64,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',
+        'https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/640px-Flag_of_Russia.svg.png'];
+
+        var Cor=(arg)=>{
+            return (
+                        arg.imgurl.map((a,i)=>{
+                            console.log(a);
+                            if(i===0)
+                            return <div class="carousel-item active" data-bs-interval='2000' >
+                                    <img src={a} class="d-block w-100"/> 
+                                </div>
+                            else
+                                return <div class="carousel-item" data-bs-interval='2000' >
+                                    <img src={a} class="d-block w-100"/> 
+                                </div>
+
+                        }) 
+                   )
+        }
+        var z=<div id="carouselExampleControls" class="carousel slide w-50 carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <Cor imgurl={ar}></Cor>      
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark-subtle" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-dark-subtle" aria-hidden="true"></span>
+                </button>    
+            </div>
+            ReactDOM.render(z,document.getElementById("root"))
+    </script>
+</body>
+</html>

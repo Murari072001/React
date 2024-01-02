@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="dd"></div>
+    <script type="text/babel">
+        var mi=['Rohit','Surya','Kishan','Bumrah','Piyush']
+        var rcb=['Kohli','Glenn','Faf','Yash','Siraj']
+        var csk=['MS Dhoni','Raina','Rayudu','Bravo','Gaikwad']
+        var List=function(arg){
+            return (
+                <div class="m-3 p-2 border border-dark"><h3 >{arg.tname}</h3>
+                <ul>
+                    {   
+                        arg.team.map((a)=>{
+                            return <li>{a}</li>
+                        })
+                    }
+                </ul></div>
+                )
+        }
+        var x=<div class="border border-dark">
+                <h1>Welcome To Edupoly React</h1>
+                <List team={csk} tname="Chennai Super Kings"></List>
+                <List team={rcb} tname="Royal Challengers Banglore"></List>
+                <List team={mi} tname="Mumbai Indians"></List>
+                </div>
+
+                ReactDOM.render(x,document.getElementById("dd"))
+    </script>
+</body>
+</html>

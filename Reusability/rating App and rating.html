@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <title>Rating App</title>
+    <Style>
+        .filled{
+            color:rgb(255, 0, 0,0.3);
+        }
+        .notfilled{
+            color:rgb(0,0,0,0.2);
+        }
+        .selected{
+            color:gold
+        }
+        .partial{
+            color:rgb(255, 215, 0,0.3)
+        }
+    </Style>
+</head>
+<body>
+    <div id="main"></div>
+    <script type="text/babel">
+        function Rating(){
+            var [index,setIndex]=React.useState()
+            var [selectindex,setSelectIndex]=React.useState()
+            var [isSelected,setSelect]=React.useState(false)
+            var emojis=["bi bi-emoji-frown-fill","bi bi-emoji-astonished-fill","bi bi-emoji-smile-fill","bi bi-emoji-grin-fill","bi bi-emoji-heart-eyes-fill"];
+            function fillcolor(i){
+                setIndex(i)
+                console.log();
+            }
+            function selectedfill(i)
+            {
+                setSelectIndex(i)
+                setSelect(true)
+
+            }
+            return (
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-row justify-content-center mt-3">
+                        {emojis.map((a,i)=>{
+                            return <>
+                                {isSelected&&<h1 class={(index>=i)?(selectindex<i?"bi bi-star-fill m-2 partial":"bi bi-star-fill m-2 selected"):
+                                    (selectindex>=i?"bi bi-star-fill m-2 selected":"bi bi-star-fill m-2 notfilled")} 
+                                    onMouseOver={()=>fillcolor(i)} onClick={()=>{selectedfill(i)}}>
+                                </h1>}
+                                {!isSelected&&<h1 class={index>=i?"bi bi-star-fill m-2 partial":"bi bi-star-fill m-2 notfilled"}  onMouseOver={()=>fillcolor(i)} onClick={()=>{selectedfill(i)}}></h1>}
+                                </>
+                        })}
+                    </div>
+                    <div>
+                        {isSelected&&<h1 class="d-flex flex-row justify-content-center mt-3">Rating:{selectindex+1}/5</h1>}    
+                    </div>    
+                    <div class="text-center mt-5">
+                        
+                         {isSelected&&<h1 style={{fontSize:"200px"}} class={emojis[selectindex]}></h1>}
+                     
+                    </div>
+                </div>
+            )
+        }
+        ReactDOM.render(<Rating/>,document.getElementById("main"))
+    </script>
+</body>
+</html>

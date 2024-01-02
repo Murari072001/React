@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+        <h1>Even gives Car</h1>
+        <h1>Odd gives Bike</h1>
+        <div id="root"></div>
+        <div id="root2"></div>
+        <script type="text/babel">
+            var a=+prompt()
+            var g=(a%2==0)&&<div>{<img src="https://cdni.autocarindia.com/utils/imageresizer.ashx?n=https://cms.haymarketindia.net/model/uploads/modelimages/Lamborghini-Revuelto-190920231426.jpg"/>}</div>
+            var k=!(a%2==0)&&<div>{<img src="https://bd.gaadicdn.com/processedimages/kawasaki/ninja-400/640X309/ninja-40062b2c61a26a1e.jpg"/>}</div>
+            ReactDOM.render(k,document.getElementById("root"))
+            ReactDOM.render(g,document.getElementById("root2"))
+        </script>
+    </body>
+</html>

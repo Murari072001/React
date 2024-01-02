@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+        <title>E-Products-Cart</title>
+    </head>
+    <body>
+        <nav id="navbar" class="ps-5 pe-5 navbar bg-white sticky-top"></nav>
+        <div class="d-flex flex-wrap position-relative">
+            <div id="noitems" style="width: 100%;"></div>
+            <div id="cartpage" class="justify-content-center" style="width: 60%;"></div>
+            <div id="pricebox" style="width:40%;right:0px" class="position-fixed" ></div>
+        </div>
+        <script type="text/babel">
+                var itemslist=JSON.parse(window.localStorage.getItem("productslist"))
+                var cartitemslist=itemslist.filter((a)=>{return a.inCart}).map((a)=>{
+                    return {...a,count:1}
+                })
+                function createcartpage()
+                    {   
+                        if(cartitemslist.length===0)
+                        {
+                            document.getElementById("cartpage").innerHTML="";
+                            document.getElementById("pricebox").innerHTML="";
+                            var x=<div class="text-center">
+                                    <h1 style={{fontSize:"80px"}} class="m-0 p-0">Oops</h1>
+                                    <h1 style={{fontSize:"200px"}} class="m-0 p-0 bi bi-exclamation-circle"></h1>
+                                    <h1 class="m-0 p-0">No Items In The Cart</h1>
+                                    <h4 class="m-0 p-0">To Add Items In Cart</h4>
+                                    <a href="productspage.html"><button class="btn text-bold bg-secondary-subtle">Go To Products</button></a>
+                                </div>
+                                ReactDOM.render(x,document.getElementById("noitems"))
+                        }
+                        else
+                        {
+                            var x=cartitemslist.map((item,index)=>{
+                            return (<div class="card w-75 m-3 border-3 p-2 d-flex flex-row">
+                                        <div class="w-25"><img class="m-2" style={{height:"150px",width:"150px"}} src={item.image} alt="" /></div>
+                                        <div class="w-75 ps-3 d-flex flex-column">
+                                            <h4 class="mb-auto">{item.title}</h4> 
+                                            <p class="m-0"><i><b>Price:{item.price}</b></i></p>
+                                            <span class="align-middle">
+                                            <button disabled={item.count===1?true:false} class="border-0 btn p-1 m-1 mt-0 mb-0 d-inline align-middle" onClick={()=>{sub(item)}}>
+                                                <h4 class="bi bi-dash-square"></h4>
+                                            </button>
+                                            <h4 class="d-inline">{item.count}</h4>
+                                            <button class="d-inline border-0 btn p-1 m-1 mt-0 mb-0 align-middle" onClick={()=>{add(item)}}>
+                                                <h4 class="bi bi-plus-square"></h4>
+                                            </button>
+                                            <button class="d-inline btn bg-warning w-50 m-1 mt-0 mb-0" onClick={()=>{removefromcart(item,index)}}>
+                                                <i class="bi bi-cart3"></i> Remove
+                                            </button> 
+                                            </span>
+                                        </div>
+                                    </div>) 
+                            })
+                            
+                        createtotalprice()
+                        ReactDOM.render(x,document.getElementById("cartpage"))
+                        }
+                        
+                    }
+
+                    function createnavbar()
+                    {
+
+                        var cartcount=cartitemslist.length
+                        var icon=<>
+                                    <a href="productspage.html" id="home" class="navbar-brand">
+                                        <h4>e-Commerce Website</h4>
+                                    </a>
+                                    <button id="searchbox" class="outline-primary d-flex btn bg-primary-subtle w-50">
+                                        <span class="bi bi-search"></span>
+                                        <input type="text" onKeyUp={searchitem} class="w-100 ps-2 border-0 bg-transparent" style={{outline:"none"}} name="productsearch" id="" placeholder="Search for the products"/>    
+                                    </button>
+                                    <button class="ms-auto btn">
+                                        <a href="cartpage.html">
+                                            <span style={{fontSize:"30px"}} class="position-relative bi bi-cart3 m-0 p-0">
+                                                <span style={{fontSize:"10px"}} class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cartcount}</span>    
+                                            </span>
+                                        </a>
+                                    </button>
+                                </>
+                        ReactDOM.render(icon,document.getElementById("navbar"))
+                    }
+
+                    function createtotalprice()
+                    {
+                        var total=0;
+                        var discount=0;
+                        var charges=50;
+                        var totalitems=cartitemslist.length;
+                        var total=cartitemslist.map((a)=>{return (a.price*a.count)})
+                        var total=total.reduce((a,b)=>{return a+b},0)
+                        if(total<=500)
+                        discount=0;
+                        else if(total>500&&total<=1000)
+                        discount=5;
+                        else if(total>1000&&total<=2000)
+                        discount=15;
+                        else if(total>2000)
+                        discount=20;
+                        var y=<div class="card p-3 m-3 w-75 shadow-lg">
+                                <h3 class="text-center mb-2">TOTAL PRICE</h3>
+                                <table class="table">
+                                    <tr class="m-2">
+                                      <td>Items({totalitems})</td>
+                                      <td><i class="bi bi-currency-rupee p-0">{total.toFixed(2)}</i></td>  
+                                    </tr>
+                                    <tr>
+                                        <td>Discount:</td>
+                                        <td class="text-success">{discount}%</td>    
+                                    </tr>
+                                    <tr class="m-2">
+                                        <td>Delivery Charges:</td>
+                                        <td>{!(total>=500)&&<span class="bi bi-currency-rupee m-0 p-0">{charges}</span>}
+                                            {(total>=500)&&<><span class="m-0 text-success p-0 text-decoration-line-through bi bi-currency-rupee">{charges}</span>
+                                                            <b class="m-1 text-success p-0"><i>Free</i></b></>}    
+                                        </td>    
+                                    </tr>
+                                    <tr class="m-2 border-secondary" style={{borderTop:"dashed"}}>
+                                        <th>Total Amount</th>
+                                        <th>{!(total>=500)&&<i class="bi bi-currency-rupee p-0">{((charges+Number(total))).toFixed(2)}</i>}
+                                            {(total>=500)&&<i class="bi bi-currency-rupee p-0">{(total*(100-discount)/100).toFixed(2)}</i>}</th>
+                                    </tr>    
+                                </table>
+                            </div>
+                                ReactDOM.render(y,document.getElementById("pricebox"))
+                    }
+
+                    function removefromcart(a,i)
+                    {
+                        itemslist.find((item)=>{return (item.title===a.title) }).inCart=false
+                        cartitemslist.splice(i,1)
+                        window.localStorage.setItem('productslist',JSON.stringify(itemslist))
+                        createcartpage()
+                        createtotalprice()
+                        createnavbar()
+                    }
+                    function add(a)
+                    {
+                        a.count++;
+                        createcartpage()
+                        createtotalprice()
+                    }
+                    function sub(a)
+                    {
+                        a.count--;
+                        createcartpage()
+                        createtotalprice()
+                    }
+
+                    function searchitem(e)
+                    {
+                        
+                    }
+                    createnavbar()
+                    createcartpage()
+        </script>
+    </body>
+</html>

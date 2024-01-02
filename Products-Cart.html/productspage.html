@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <title>E-Products</title>
+</head>
+<body>
+    <div id="main">
+        <nav id="navbar" class="ps-5 pe-5 navbar bg-white sticky-top"></nav>
+        <div class="d-flex flex-row">
+            <div id="filters" style="width:15%;"></div>
+            <div id="productspage" class="border-3 w-100 border-dark d-flex flex-wrap justify-content-around"></div>
+        </div>
+       
+    </div>
+    <script type="text/babel">
+        var products=JSON.parse(window.localStorage.getItem("productslist"));
+        var checkedboxes=[];
+        var index;
+        var searchword="";
+        var sorttype="";
+        function createproductspage() {
+                    var k = <>{products.map((item, index) => {
+
+                        return (<div class="card m-2 shadow border-dark border-3 p-3 d-flex" style={{width:"30%",height:"auto"}}>
+                                    <img class="align-self-center" style={{height:"100px",width:"100px"}} src={item.image} alt="" />
+                                    <h5 class="mb-auto">{item.title}</h5> 
+                                    <b>category:{item.category}</b> 
+                                    <b>Price: {item.price}</b> 
+                                    {!item.inCart&&<button class="btn btn-warning w-50 text-center justify-content-center" onClick={()=>{addtocart(item)}}>
+                                        <i class="bi bi-cart3">Add to Cart</i>
+                                        </button>}
+                                    {item.inCart&&<button class="btn btn-warning w-50 text-center justify-content-center">
+                                        <a href="cartpage.html" class="text-decoration-none text-dark bi bi-cart3">Go to Cart</a>
+                                    </button>} 
+                                </div>)
+                    })}</>
+                    ReactDOM.render(k,document.getElementById("productspage"))
+                }
+        function createfilters()
+        {
+            var f= <div class="rounded position-fixed m-2 p-1 border border-dark border-3" style={{width:"200px"}}>
+                    <h4>Categories</h4>
+                    <p><input type="checkbox" onChange={filtercategory} name="category" id="men'sclothing" value="men's clothing"/><label for="men'sclothing"> Men's Clothing</label></p>
+                    <p><input type="checkbox" onChange={filtercategory} name="category" id="women'sclothing" value="women's clothing"/><label for="women'sclothing"> Women's Clothing</label></p>
+                    <p><input type="checkbox" onChange={filtercategory} name="category" id="jewelery" value="jewelery"/><label for="jewelery"> Jewelery</label></p>
+                    <p><input type="checkbox" onChange={filtercategory} name="category" id="electronics" value="electronics"/><label for="electronics"> Electronics</label></p>
+                    <h4>Sort</h4>
+                    <p><input type="radio" name="sortprice" id="lowtohigh" onChange={pricesort} value="lowtohigh"/><label for="lowtohigh">Price(Low to High)</label></p>
+                    <p><input type="radio" name="sortprice" id="hightolow" onChange={pricesort} value="hightolow"/><label for="hightolow">Price(High to Low)</label></p>
+                </div>
+                ReactDOM.render(f,document.getElementById("filters"))
+        }
+                function createnavbar()
+                {
+                    
+                    var cartcount=0
+                    products.forEach(a => {
+                        if(a.inCart)
+                        cartcount++;
+                    });
+                    var icon=<>
+                                    <a href="productspage.html" id="home" class="navbar-brand">
+                                        <h4>e-Commerce Website</h4>
+                                    </a>
+                                    <button id="searchbox" class="outline-primary d-flex btn bg-primary-subtle w-50">
+                                        <span class="bi bi-search"></span>
+                                        <input type="text" onKeyUp={searchitem} class="w-100 ps-2 border-0 bg-transparent" style={{outline:"none"}} name="productsearch" id="" placeholder="Search for the products"/>    
+                                    </button>
+                                    <button class="ms-auto btn">
+                                        <a href="cartpage.html">
+                                            <span style={{fontSize:"30px"}} class="position-relative bi bi-cart3 m-0 p-0">
+                                                <span style={{fontSize:"10px"}} class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cartcount}</span>    
+                                            </span>
+                                        </a>
+                                    </button>
+                            </>
+                    ReactDOM.render(icon,document.getElementById("navbar"))
+                }
+
+                function addtocart(a)
+                {
+                     products=JSON.parse(window.localStorage.getItem("productslist"))
+                    index=products.findIndex((item)=>{ return (a.title===item.title)})
+                    products[index].inCart=true;
+                    window.localStorage.setItem('productslist',JSON.stringify(products))
+                    checkandrunfilter()
+                    createproductspage()
+                    createnavbar()
+                }
+                function searchitem(event)
+                {
+                    
+                    searchword=event.target.value
+                    products=JSON.parse(window.localStorage.getItem("productslist"))
+                    checkandrunfilter()
+                    createproductspage()
+                }
+                function filtercategory(event)
+                {
+                    products=JSON.parse(window.localStorage.getItem("productslist"));
+                    if(event.target.checked)
+                    checkedboxes.push(event.target.value);
+                    else
+                    checkedboxes.splice(checkedboxes.indexOf(event.target.value),1)
+                    checkandrunfilter()
+                    createproductspage()
+                }
+                function pricesort(event)
+                {
+                    sorttype=event.target.value;
+                    checkandrunfilter()
+                    createproductspage()
+                }
+                function checkandrunfilter()
+                {
+                    if(checkedboxes.length>0)
+                    filtercheckboxes()
+                    if(searchword.length>0)
+                    filtersearch()
+                    if(sorttype.length>0)
+                    filterpricesort()
+                }
+                function filtercheckboxes()
+                {   
+                    products=JSON.parse(window.localStorage.getItem("productslist"));
+                    products=products.filter((item)=>{
+                        return (checkedboxes.some((a)=>{
+                            return (item.category===a)
+                        }))
+                    })
+                }
+                function filtersearch(){
+                    products=products.filter((a)=>{return (a.title.toLowerCase().includes(searchword.toLowerCase()))})
+                }
+                function filterpricesort()
+                {
+                    if(sorttype==="lowtohigh")
+                    {
+                        products=products.sort((a,b)=>{
+                            if(a.price>b.price)
+                            return 1
+                            else(a.price<b.price)
+                            return -1
+                        })
+                    }
+                    else
+                    {
+                        products=products.sort((a,b)=>{
+                            if(a.price<b.price)
+                            return 1
+                            else(a.price>b.price)
+                            return -1
+                        })   
+                    }
+                }
+                createnavbar()
+                createfilters()
+                createproductspage()
+    </script>
+</body>
+</html
