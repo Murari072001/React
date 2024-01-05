@@ -1,0 +1,39 @@
+li{
+    list-style: none;
+}
+#feature li{
+    list-style: none;
+    width: 30%;
+}
+#feature li i{
+    font-size: 30px;
+}
+#contact div h4{
+    font-size: 20px;
+}
+.course{
+    width: 30%;
+}
+.carousel-item div{
+    font-size: 100px;
+}
+.carousel-item{
+   height:300px;
+   width: 30%;
+}
+.contact{
+    width: 40%;
+}
+.icon{
+    height: 50px;
+    width: 50px;
+}
+.bg-green{
+    background-color: rgb(58, 177, 94);
+}
+.bg-orange{
+    background-color: orange;
+}
+.bg-instagram{
+    background-color: rgb(167, 11, 230);
+}
