@@ -104,7 +104,7 @@
                                 return(<Table table={a} setSelectedTable={setSelectedTable}/>)
                             })}    
                         </div>
-                        <div className="w-50 m-2 p-2border boder-danger">
+                        <div className="w-50 m-2 p-2 border border-danger">
                             <BillDesk selectedTable={selectedTable} removeitem={removeitem} checkout={checkout} unbook={unbook} quantitycount={quantitycount} booktable={booktable} addItem={addItem} />    
                         </div>
                     </div>
@@ -120,7 +120,7 @@
             )
         }
         function Table({table,setSelectedTable})
-        {
+        {console.log(table)
             return(
                 <div className="w-25 text-center m-2 p-2"  onClick={()=>{setSelectedTable(table)}} style={table.vacancy?{border:"5px solid green"}:{border:"5px solid red"}}>
                     <h3>{table.tableId.toUpperCase()}</h3>
